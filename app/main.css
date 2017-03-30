@@ -6,3 +6,7 @@
 .lowercase-buttons .mdl-button {
   text-transform: none;
 }
+
+.content {
+  margin:30px;
+}
