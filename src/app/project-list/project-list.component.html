@@ -12,4 +12,15 @@
         <i class="material-icons">videogame_asset</i> VoidGame
       </button>
     </md-toolbar-row>
+    <md-toolbar-row>
+      <button md-button routerLink="/farm-game">
+        <i class="material-icons">videogame_asset</i> FarmGame
+      </button>
+    </md-toolbar-row>
   </md-toolbar>
+
+  <h1>PathLocationStrategy</h1>
+    Current URL is: <code>{{location.path()}}</code><br>
+    Normalize: <code>/foo/bar/</code> is: 
+    <code>{{location.normalize('foo/bar')}}
+      </code><br>

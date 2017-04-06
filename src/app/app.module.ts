@@ -6,10 +6,11 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@angular/material';
 
 import { AppComponent } from './app-wrapper/app.component';
-import { GameEngineListComponent } from './game-engine-list/game-engine-list.component';
-import { VoidGameComponent } from './void-game/void-game.component';
+import { GameEngineListComponent } from './projects/game-engine-list/game-engine-list.component';
+import { VoidGameComponent } from './projects/void-game/void-game.component';
 import { ProjectListComponent } from './project-list/project-list.component';
-
+import { FarmGameModule } from'./projects/farm-game/farm-game.module';
+import { FarmGameComponent } from'./projects/farm-game/farm-game.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ProjectListComponent } from './project-list/project-list.component';
     FormsModule,
     HttpModule,
     MaterialModule,
+    FarmGameModule,
     RouterModule.forRoot([
       {
         path: '',
@@ -34,12 +36,16 @@ import { ProjectListComponent } from './project-list/project-list.component';
         component: GameEngineListComponent
       },
       {
+        path: 'project-list',
+        component: ProjectListComponent
+      },
+      {
         path: 'void-game',
         component: VoidGameComponent
       },
       {
-        path: 'project-list',
-        component: ProjectListComponent
+        path: 'farm-game',
+        component: FarmGameComponent
       },
     ])
   ],
