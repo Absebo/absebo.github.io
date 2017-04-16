@@ -8,8 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script>
+  // See http://www.backalleycoder.com/2016/05/13/sghpa-the-single-page-app-hack-for-github-pages/
+  (function(){
+    var redirect = sessionStorage.redirect;
+    delete sessionStorage.redirect;
+    if (redirect && redirect != location.href) {
+      history.replaceState(null, null, redirect);
+    }
+  })();
+</script>
 <link href="styles.92d1ae9b27886c4c08e0.bundle.css" rel="stylesheet"/></head>
 <body>
   <app-root>Loading...</app-root>
-<script type="text/javascript" src="inline.43f3df33a27783649220.bundle.js"></script><script type="text/javascript" src="polyfills.18173234f9641113b9fe.bundle.js"></script><script type="text/javascript" src="vendor.816d2e1aaaf7485b7e7b.bundle.js"></script><script type="text/javascript" src="main.3b41bede068ed3ea91d8.bundle.js"></script></body>
+<script type="text/javascript" src="inline.c546400f37d72809248a.bundle.js"></script><script type="text/javascript" src="polyfills.18173234f9641113b9fe.bundle.js"></script><script type="text/javascript" src="vendor.40c0a2d7d5bc55a0c9e9.bundle.js"></script><script type="text/javascript" src="main.d82ddda1541f70460029.bundle.js"></script></body>
 </html>
