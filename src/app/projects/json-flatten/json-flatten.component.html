@@ -1,0 +1,21 @@
+<form #jsonFlatForm="ngForm">
+  <md-input-container>
+    <textarea mdInput placeholder="your json" 
+      [(ngModel)]="jsonOfTheUser"
+      required
+      name="jsonOfTheUser"
+      #jsonOfTheUserModel="ngModel">
+    </textarea>
+    <md-error>{{jsonOfTheUserModel.control.errors?.message}}</md-error>
+  </md-input-container>
+  <button md-raised-button 
+    [disabled]="!jsonFlatForm.form.valid"
+    (click)="flattenJson()">
+      flat
+    </button>
+  <button md-raised-button
+    [disabled]="!jsonFlatForm.form.valid"
+    (click)="unflattenJson()">
+      unflat
+  </button>
+<form>

@@ -2,3 +2,25 @@
 .content {
   margin:30px;
 }
+
+table {
+  display: block;
+  overflow-x: auto;
+}
+
+table, th, td {
+    border: 1px solid gray;
+    border-collapse: collapse;
+}
+
+.table-prop-positive {
+  color: green;
+}
+
+.table-prop-negative {
+  color: red;
+}
+
+table ul {
+      padding-left: 18px;
+}

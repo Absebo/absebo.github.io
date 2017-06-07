@@ -1,0 +1,11 @@
+form {
+    padding: 10px;
+}
+
+md-input-container {
+    display: block;
+}
+
+textarea {
+    height: 20em;
+}

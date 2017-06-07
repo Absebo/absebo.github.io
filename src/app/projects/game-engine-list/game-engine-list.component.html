@@ -1,26 +1,110 @@
 <div class="content">
   <md-tab-group>
+    <md-tab label="Filter">
+      <search-filter>
+      </search-filter>
+    </md-tab>
     <md-tab label="Objective evaluation criteria">
-      
+      Following criteria are not measured in numbers cause then they would not be meaningful enough 
+      <ul>
+        <li>documentation</li>
+        <li>debugging / IDE</li>
+      </ul>
     </md-tab>
     <md-tab label="Subjective evaluation criteria">
       <ol>
-        <li>Component based</li>
-        <li>SceneEditor</li>
-        <li>UI</li>
         <li>good documentation</li>
+        <li>component based</li>
+        <li>UI</li>
+        <li>scene editor</li>
       </ol>
-      <article>My subjective favorites are: Libgdx, (AtomicEditor), Tiled</article>
+      <article>My subjective favorites are: (TODO)Tiled</article>
+    </md-tab>
+    <md-tab label="Legend(depr)">
+      <md-list>
+        <md-list-item> Type: E <i class="material-icons">arrow_forward</i> Engine </md-list-item>
+        <md-list-item> Type: G <i class="material-icons">arrow_forward</i> Engine uses a scene graph</md-list-item>
+        <md-list-item> Type: S <i class="material-icons">arrow_forward</i> Scene editor </md-list-item>
+        <md-list-item> Type: T <i class="material-icons">arrow_forward</i> Tool (other tool than a scene editor) </md-list-item>
+      </md-list>
     </md-tab>
   </md-tab-group>
-  <h4>Legend</h4>
-  <article>
-    <md-list>
-      <md-list-item> Type: E <i class="material-icons">arrow_forward</i> Engine </md-list-item>
-      <md-list-item> Type: T <i class="material-icons">arrow_forward</i> Tool </md-list-item>
-      <md-list-item> Type: S <i class="material-icons">arrow_forward</i> SceneEditor </md-list-item>
-    </md-list>
-  </article>
+  <table>
+    <caption>Game engines or tools</caption>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>2d</th>
+        <th>3d</th>
+        <th>Programming languages</th>
+        <th>Dev - Platfrom</th>
+        <th>Dist - Platform</th>
+        <th>Documentation</th>
+        <th>Debugging / IDE</th>
+        <th>Account required</th>
+        <th>License</th>
+        <th>Pro comment</th>
+        <th>Contra comment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let gameEngine of gameEngines | gameEnginePipe">
+        <td>{{gameEngine.name}}</td>
+        <td>
+          <div *ngFor="let type of gameEngine.types" [ngSwitch]="type" title="{{Type[type]}}">
+            <i *ngSwitchCase=" Type.ENGINE " class="material-icons">group_work</i>
+            <span *ngSwitchCase=" Type.ENGINE_WITH_SCENE_GRAPH " style="white-space: nowrap">
+              <i class="material-icons">group_work</i>
+              <i class="material-icons">add</i>
+              <i class="material-icons">picture_in_picture</i>
+            </span>
+            <i *ngSwitchCase=" Type.SCENE_EDITOR " class="material-icons">add_to_queue</i>
+            <i *ngSwitchCase=" Type.TOOL " class="material-icons">mode_edit</i>
+            <span *ngSwitchDefault>This type is not supported</span>
+          </div>
+        </td>
+        <td>
+          <i *ngIf="!gameEngine.support2d" 
+              class="material-icons table-prop-negative">close</i>
+          <i *ngIf="gameEngine.support2d"
+              class="material-icons table-prop-positive">check</i>
+        </td>
+        <td>
+          <i *ngIf="!gameEngine.support3d" 
+              class="material-icons table-prop-negative">close</i>
+          <i *ngIf="gameEngine.support3d"
+              class="material-icons table-prop-positive">check</i>
+        </td>
+        <td>
+          <ul>
+            <li *ngFor="let language of gameEngine.programmingLanguages">{{language}}</li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li *ngFor="let platform of gameEngine.devPlatform">{{platform}}</li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li *ngFor="let platform of gameEngine.distPlatform">{{platform}}</li>
+          </ul>
+        </td>
+        <td>{{gameEngine.documentation}}</td>
+        <td>{{gameEngine.additionalRequirements}}</td>
+        <td>
+          <i *ngIf="!gameEngine.accountRequired" 
+              class="material-icons table-prop-negative">close</i>
+          <i *ngIf="gameEngine.accountRequired"
+              class="material-icons table-prop-positive">check</i>
+        </td>
+        <td>{{gameEngine.license}}</td>
+        <td>{{gameEngine.commentPro}}</td>
+        <td>{{gameEngine.commentContra}}</td>
+      </tr>
+    </tbody>
+  </table>
   <iframe src="https://docs.google.com/spreadsheets/d/1LOGsA0QqQ2pa75Td3gTpIvC5fNGvOBwJEKICGfOCXQI/pubhtml?widget=true&amp;headers=false"
     width="100%" height="450em">
   </iframe>

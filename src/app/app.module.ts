@@ -4,21 +4,22 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppComponent } from './app-wrapper/app.component';
-import { GameEngineListComponent } from './projects/game-engine-list/game-engine-list.component';
+import { AppComponent } from './app.component';
 import { VoidGameComponent } from './projects/void-game/void-game.component';
 import { ProjectListComponent } from './project-list/project-list.component';
+
 import { FarmGameModule } from'./projects/farm-game/farm-game.module';
-import { FarmGameComponent } from'./projects/farm-game/farm-game.component';
+import { JsonFlattenModule } from'./projects/json-flatten/json-flatten.module';
+import { GameEngineListModule } from './projects/game-engine-list/game-engine-list.module';
+
+import {ROUTES} from './app.routes';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GameEngineListComponent,
     VoidGameComponent,
-    ProjectListComponent
+    ProjectListComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,29 +27,9 @@ import { FarmGameComponent } from'./projects/farm-game/farm-game.component';
     HttpModule,
     MaterialModule,
     FarmGameModule,
-    RouterModule.forRoot([
-      {
-        path: '',
-        redirectTo: '/project-list',
-        pathMatch: 'full'
-      },
-      {
-        path: 'game-engine-list',
-        component: GameEngineListComponent
-      },
-      {
-        path: 'project-list',
-        component: ProjectListComponent
-      },
-      {
-        path: 'void-game',
-        component: VoidGameComponent
-      },
-      {
-        path: 'farm-game',
-        component: FarmGameComponent
-      },
-    ])
+    GameEngineListModule,
+    JsonFlattenModule,
+    RouterModule.forRoot(ROUTES)
   ],
   providers: [],
   bootstrap: [AppComponent]

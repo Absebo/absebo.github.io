@@ -1,0 +1,32 @@
+<ul>
+    <li *ngFor="let searchFilter of searchFilterList">
+        <!--filter name-->
+        <md-select placeholder="Property to filter" [(ngModel)]="searchFilter.propertyType">
+            <md-option *ngFor="let option of searchFilterOptions" [value]="option">
+                {{ option.name }}
+            </md-option>
+        </md-select>
+        <!--filter value-->
+        <div *ngIf="searchFilter.propertyType">
+            <!--string filter value-->
+            <div *ngIf=" searchFilter.propertyType.name === 'Name'">String</div>
+            <!--type filter value-->
+            <div *ngIf=" searchFilter.propertyType.name === 'Type'">Type
+                <md-select placeholder="Value to filter" [(ngModel)]="searchFilter.propertyValue">
+                    <md-option *ngFor="let option of []" [value]="a">
+                        {{ option }}
+                    </md-option>
+                </md-select>
+            </div>
+            <!--boolean filter value-->
+            <div *ngIf=" searchFilter.propertyType.name === '2d' || searchFilter.propertyType.name === '3d' ">bool</div>
+        </div>
+    
+        <button md-mini-fab (click)="deleteSearchFilter(searchFilter)">
+        <i class="material-icons">remove</i>
+        </button>
+    </li>
+</ul>
+<button md-mini-fab (click)="addSearchFilter()">
+    <i class="material-icons">add</i>
+</button>
