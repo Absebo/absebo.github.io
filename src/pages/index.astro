@@ -1,0 +1,48 @@
+---
+import ListItemLink from "../components/ListItemLink.astro";
+import Headline from "../components/Headline.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout headline="My Public Projects">
+    <ul>
+        <ListItemLink
+            text="Hytale Share Code Inspector 🔎"
+            href="https://absebo.github.io/hytale-share-code-inspector/"
+        />
+        <ListItemLink
+            text="Shopping List 🥐"
+            href="https://abseboco.gitlab.io/cookbook-shopping-list"
+        />
+        <ListItemLink
+            text="Pizza Calculator 🍕"
+            href="https://absebo.gitlab.io/pizza-calculator"
+        />
+        <ListItemLink
+            text="CRLF converter 🗄️v1"
+            href="https://absebo.gitlab.io/crlf-converter-gui/"
+        />
+        <ListItemLink text="CRLF converter 🗄️v2" href="/crlf-converter" />
+    </ul>
+    <Headline size="h2">Other Links</Headline>
+    <ul>
+        <ListItemLink
+            text="My Github Profile 🪪"
+            href="https://github.com/Absebo"
+        />
+    </ul>
+</Layout>
+
+<style>
+    ul {
+        list-style: disclosure-closed;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        color: var(--primary-text-color);
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+</style>

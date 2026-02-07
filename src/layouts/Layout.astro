@@ -1,0 +1,80 @@
+---
+import Headline from "../components/Headline.astro";
+import Link from "../components/Link.astro";
+const { headline } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Absebo's projects</title>
+        <base href="/" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+            name="description"
+            content="List of public projects made by Absebo. Including the Hytale share code inspector to decode the Hytale share code"
+        />
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
+        <link rel="sitemap" href="/sitemap-index.xml" />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon-180.png"
+        />
+    </head>
+    <body>
+        <header>
+            <nav>
+                <Link href="/">🏠</Link>
+            </nav>
+            <Headline class="headline">
+                {headline}
+            </Headline>
+            <div class="spacer"></div>
+        </header>
+        <main>
+            <slot />
+        </main>
+    </body>
+</html>
+
+<style>
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+    nav {
+        margin-top: 1rem;
+    }
+    .headline {
+        font-size: 2.75rem;
+        margin: 0;
+        padding: 1rem 3rem;
+    }
+    .spacer {
+        width: 5rem;
+    }
+
+    :root {
+        --a: #7827c3;
+        --b: #948dff;
+        --primary-color: #7929c4;
+        --secondary-color: #4f46e5;
+        --primary-color-contrast: white;
+        --secondary-color-contrast: white;
+    }
+
+    body {
+        font-family:
+            -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+            Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    main {
+        max-width: 30rem;
+        margin: auto;
+    }
+</style>

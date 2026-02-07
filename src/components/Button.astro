@@ -1,0 +1,24 @@
+---
+const props = Astro.props;
+---
+
+<button {...props}><slot /></button>
+
+<style>
+    button {
+        background: linear-gradient(
+            -15deg,
+            var(--secondary-color),
+            var(--primary-color)
+        );
+        color: var(--primary-color-contrast);
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+    }
+
+    button:disabled {
+        filter: saturate(10%);
+        cursor: unset;
+    }
+</style>

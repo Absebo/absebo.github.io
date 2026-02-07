@@ -1,0 +1,19 @@
+---
+const props = Astro.props;
+---
+
+<a {...props}><slot /></a>
+<style>
+    a {
+        background: linear-gradient(
+            -15deg,
+            var(--secondary-color),
+            var(--primary-color)
+        );
+        color: var(--primary-color-contrast);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        position: relative;
+    }
+</style>

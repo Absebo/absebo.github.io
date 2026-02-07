@@ -24,6 +24,9 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Astro
+.astro/*
+
 # misc
 /.sass-cache
 /connect.lock

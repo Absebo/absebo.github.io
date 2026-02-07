@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://absebo.github.io/sitemap-index.xml

@@ -1,0 +1,223 @@
+---
+import Button from "./Button.astro";
+import Headline from "./Headline.astro";
+---
+
+<div class="container">
+    <Headline size="h2">1. Choose file</Headline>
+    <label for="file">
+        <input id="file" type="file" multiple />
+        <p>Drop files here</p>
+        <p id="messages"></p>
+    </label>
+    <Headline size="h2">2. Convert & download</Headline>
+    <Button id="convert-cr">Convert to CR (Mac Classic)</Button>
+    <Button id="convert-lf">Convert to LF (Unix, Linux, Mac OS X)</Button>
+    <Button id="convert-crlf">Convert to CRLF (Windows)</Button>
+</div>
+
+<style>
+    label[for="file"] {
+        padding-bottom: 1rem;
+        border-radius: 0.25rem;
+        text-align: center;
+        border: 0.25rem solid var(--secondary-color);
+        background-color: white;
+        color: var(--primary-color);
+        position: relative;
+    }
+    input[type="file"] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        opacity: 0;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    #messages {
+        margin: 1rem;
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 0.25rem;
+        text-align: start;
+    }
+</style>
+
+<script>
+    type NewLineType = "CR" | "LF" | "CRLF";
+
+    interface AnalyzedFile {
+        name: string;
+        content: string;
+        newLineType: NewLineType;
+    }
+
+    type AnalyzedFileResult = AnalyzedFile | { name: string; error: string };
+
+    const converterMap: Record<
+        NewLineType,
+        { selector: string; char: string }
+    > = {
+        CR: { selector: "button#convert-cr", char: "\r" },
+        LF: { selector: "button#convert-lf", char: "\n" },
+        CRLF: { selector: "button#convert-crlf", char: "\r\n" },
+    };
+
+    const converterList = Object.entries(converterMap).map(([type, value]) => ({
+        type: type as NewLineType,
+        button: requireSelector<HTMLButtonElement>(value.selector),
+    }));
+
+    const fileInput = requireSelector<HTMLInputElement>("input#file")!!;
+    const messagesContainer = requireSelector<HTMLLabelElement>("#messages")!!;
+
+    await analyzeAndUpdate();
+
+    fileInput.addEventListener("change", async () => {
+        await analyzeAndUpdate();
+    });
+    converterList.forEach(({ type, button }) => {
+        button.addEventListener("click", async () => {
+            await convertAndDownload(type);
+        });
+    });
+
+    function requireSelector<T extends HTMLElement>(selector: string): T {
+        const element = document.querySelector<T>(selector);
+        if (element === null) {
+            throw new Error(
+                `Selector '${selector}' is required but did not resolve to an element`,
+            );
+        }
+        return element;
+    }
+
+    async function convertAndDownload(type: NewLineType) {
+        const files = await analyzeFiles(fileInput.files);
+        files.forEach((file) => {
+            if ("error" in file) {
+                return;
+            }
+            const converted = convertTo(file, type);
+            triggerDownload(converted);
+        });
+    }
+
+    function setMessages(messages: [string, string][]) {
+        const elements = messages
+            .flatMap((it) => it)
+            .map((message) => {
+                const element = document.createElement("span");
+                element.textContent = message;
+                return element;
+            });
+        messagesContainer.replaceChildren(...elements);
+    }
+
+    async function analyzeAndUpdate() {
+        const files = await analyzeFiles(fileInput.files);
+        setMessages(
+            files.map((file) =>
+                "error" in file
+                    ? [file.name, file.error]
+                    : [file.name, file.newLineType],
+            ),
+        );
+        converterList.forEach((it) => {
+            it.button.disabled = files.every(
+                (file) => "newLineType" in file && file.newLineType == it.type,
+            );
+        });
+    }
+
+    async function analyzeFiles(
+        files: FileList | null,
+    ): Promise<AnalyzedFileResult[]> {
+        if (files === null) {
+            return [];
+        }
+        const result: AnalyzedFileResult[] = [];
+        for (const file of files) {
+            const analyzedFile = await analyzeFile(file);
+            result.push(analyzedFile);
+        }
+        return result;
+    }
+
+    async function analyzeFile(file: File): Promise<AnalyzedFileResult> {
+        const content = await file.text();
+        const type = analyzeContent(content);
+        if (type === null) {
+            return {
+                name: file.name,
+                error: "Could not detect newline character",
+            };
+        }
+        return {
+            name: file.name,
+            content: content,
+            newLineType: type,
+        };
+    }
+    function analyzeContent(text: string) {
+        const carriageReturn = text.includes("\r");
+        const lineFeed = text.includes("\n");
+        const carriageReturnLineFeed = text.includes("\r\n");
+        if (carriageReturnLineFeed) {
+            return "CRLF";
+        } else if (carriageReturn) {
+            return "CR";
+        } else if (lineFeed) {
+            return "LF";
+        } else {
+            return null;
+        }
+    }
+
+    function convertTo(
+        file: AnalyzedFile,
+        targetType: NewLineType,
+    ): AnalyzedFile {
+        const parts = splitFilename(file.name);
+        const content = file.content.replaceAll(
+            converterMap[file.newLineType].char,
+            converterMap[targetType].char,
+        );
+        return {
+            name: `${parts.filename}-${targetType}.${parts.extension}`,
+            content: content,
+            newLineType: targetType,
+        };
+    }
+
+    function triggerDownload(file: AnalyzedFile) {
+        const blob = new Blob([file.content], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = file.name;
+        link.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function splitFilename(path: string) {
+        const index = path.lastIndexOf(".");
+        console.log(index);
+        if (index <= 0) {
+            return {
+                extension: "",
+                filename: path,
+            };
+        }
+        return {
+            extension: path.slice(index + 1),
+            filename: path.slice(0, index),
+        };
+    }
+</script>
