@@ -1,6 +1,6 @@
 ---
 import Headline from "../components/Headline.astro";
-import Link from "../components/Link.astro";
+import IconLink from "../components/IconLink.astro";
 const { headline } = Astro.props;
 ---
 
@@ -26,7 +26,17 @@ const { headline } = Astro.props;
     <body>
         <header>
             <nav>
-                <Link href="/">🏠</Link>
+                <IconLink href="/">🏠</IconLink>
+                <IconLink
+                    href="https://github.com/Absebo/absebo.github.io"
+                    target="_blank"
+                >
+                    <img
+                        src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/github.svg"
+                        alt="GitHub project"
+                        style="width:32px;height:32px;filter:invert()"
+                    />
+                </IconLink>
             </nav>
             <Headline class="headline">
                 {headline}
@@ -48,6 +58,8 @@ const { headline } = Astro.props;
     }
     nav {
         margin-top: 1rem;
+        display: flex;
+        gap: 0.5rem;
     }
     .headline {
         font-size: 2.75rem;
@@ -55,7 +67,7 @@ const { headline } = Astro.props;
         padding: 1rem 3rem;
     }
     .spacer {
-        width: 5rem;
+        width: 6.5rem;
     }
 
     :root {
