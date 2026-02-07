@@ -8,7 +8,7 @@ const { headline } = Astro.props;
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Absebo's projects</title>
+        <title>{headline}</title>
         <base href="/" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
@@ -59,6 +59,7 @@ const { headline } = Astro.props;
     nav {
         margin-top: 1rem;
         display: flex;
+        flex-wrap: wrap;
         gap: 0.5rem;
     }
     .headline {
