@@ -58,33 +58,48 @@ import Headline from "./Headline.astro";
         newLineType: NewLineType;
     }
 
+    interface Converter {
+        selector: string;
+        char: string;
+        newLineType: NewLineType;
+    }
+
     type AnalyzedFileResult = AnalyzedFile | { name: string; error: string };
 
-    const converterMap: Record<
-        NewLineType,
-        { selector: string; char: string }
-    > = {
-        CR: { selector: "button#convert-cr", char: "\r" },
-        LF: { selector: "button#convert-lf", char: "\n" },
-        CRLF: { selector: "button#convert-crlf", char: "\r\n" },
-    };
+    const converters: Converter[] = [
+        { selector: "button#convert-cr", char: "\r", newLineType: "CR" },
+        { selector: "button#convert-lf", char: "\n", newLineType: "LF" },
+        { selector: "button#convert-crlf", char: "\r\n", newLineType: "CRLF" },
+    ];
 
-    const converterList = Object.entries(converterMap).map(([type, value]) => ({
-        type: type as NewLineType,
-        button: requireSelector<HTMLButtonElement>(value.selector),
-    }));
+    const converterMap = converters.reduce(
+        (acc, it) => {
+            acc[it.newLineType] = {
+                ...it,
+                button: requireSelector<HTMLButtonElement>(it.selector),
+            };
+            return acc;
+        },
+        {} as Record<NewLineType, Converter & { button: HTMLButtonElement }>,
+    );
 
-    const fileInput = requireSelector<HTMLInputElement>("input#file")!!;
-    const messagesContainer = requireSelector<HTMLLabelElement>("#messages")!!;
+    const convertersOrderedByPriority = [
+        converterMap.CRLF,
+        converterMap.CR,
+        converterMap.LF,
+    ];
+
+    const fileInput = requireSelector<HTMLInputElement>("input#file");
+    const messagesContainer = requireSelector<HTMLLabelElement>("#messages");
 
     await analyzeAndUpdate();
 
     fileInput.addEventListener("change", async () => {
         await analyzeAndUpdate();
     });
-    converterList.forEach(({ type, button }) => {
-        button.addEventListener("click", async () => {
-            await convertAndDownload(type);
+    Object.values(converterMap).forEach((it) => {
+        it.button.addEventListener("click", async () => {
+            await convertAndDownload(it.newLineType);
         });
     });
 
@@ -129,9 +144,10 @@ import Headline from "./Headline.astro";
                     : [file.name, file.newLineType],
             ),
         );
-        converterList.forEach((it) => {
+        Object.values(converterMap).forEach((it) => {
             it.button.disabled = files.every(
-                (file) => "newLineType" in file && file.newLineType == it.type,
+                (file) =>
+                    "newLineType" in file && file.newLineType == it.newLineType,
             );
         });
     }
@@ -166,18 +182,12 @@ import Headline from "./Headline.astro";
         };
     }
     function analyzeContent(text: string) {
-        const carriageReturn = text.includes("\r");
-        const lineFeed = text.includes("\n");
-        const carriageReturnLineFeed = text.includes("\r\n");
-        if (carriageReturnLineFeed) {
-            return "CRLF";
-        } else if (carriageReturn) {
-            return "CR";
-        } else if (lineFeed) {
-            return "LF";
-        } else {
-            return null;
+        for (const converter of convertersOrderedByPriority) {
+            if (text.includes(converter.char)) {
+                return converter.newLineType;
+            }
         }
+        return null;
     }
 
     function convertTo(
