@@ -2,6 +2,7 @@
 import ListItemLink from "../components/ListItemLink.astro";
 import Headline from "../components/Headline.astro";
 import Layout from "../layouts/Layout.astro";
+import GithubIcon from "../components/GithubIcon.astro";
 ---
 
 <Layout headline="Absebo's public projects">
@@ -25,7 +26,8 @@ import Layout from "../layouts/Layout.astro";
     <Headline size="h2">Other Links</Headline>
     <ul>
         <ListItemLink href="https://github.com/Absebo">
-            My Github Profile 🪪
+            My Github Profile
+            <GithubIcon alt="GitHub profile" />
         </ListItemLink>
     </ul>
 </Layout>

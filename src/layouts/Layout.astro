@@ -1,6 +1,7 @@
 ---
 import Headline from "../components/Headline.astro";
 import IconLink from "../components/IconLink.astro";
+import GithubIcon from "../components/GithubIcon.astro";
 const { headline } = Astro.props;
 ---
 
@@ -31,11 +32,7 @@ const { headline } = Astro.props;
                     href="https://github.com/Absebo/absebo.github.io"
                     target="_blank"
                 >
-                    <img
-                        src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/github.svg"
-                        alt="GitHub project"
-                        style="width:32px;height:32px;filter:invert()"
-                    />
+                    <GithubIcon alt="GitHub project" invert />
                 </IconLink>
             </nav>
             <Headline class="headline">
